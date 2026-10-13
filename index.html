@@ -75,6 +75,49 @@
             margin-top: 1rem;
             font-weight: 500;
         }
+        
+        /* Style du Compte à rebours */
+        .countdown-box {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 1.5rem 1rem;
+            margin-top: 2.5rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+        .countdown-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #1b3b6f;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .countdown {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        .time-block {
+            background: #1b3b6f;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            min-width: 75px;
+        }
+        .time-block .number {
+            font-size: 1.8rem;
+            font-weight: 700;
+            display: block;
+            line-height: 1.2;
+        }
+        .time-block .label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            opacity: 0.85;
+        }
+
         footer {
             background-color: #1a202c;
             color: #a0aec0;
@@ -92,19 +135,39 @@
 
     <main>
         <div class="image-container">
-            <!-- Image principale du coucher de soleil avec les croix -->
             <img src="croix 1.jpg" alt="Action Catholique Française" class="main-img">
         </div>
 
-        <!-- Deuxième affichage de la croix icône sur la page -->
         <div class="icon-section">
             <img src="Croix icône.png" alt="Croix Catholique" class="page-cross-icon">
         </div>
 
-        <!-- Nouvelle description -->
         <p class="welcome-text">
             Ce site web est destiné à des personnes catholiques en recherche du meilleur candidat pour les élections présidentielles françaises de 2027.
         </p>
+
+        <!-- Section du Compte à Rebours -->
+        <div class="countdown-box">
+            <div class="countdown-title">Ouverture du 1<sup>er</sup> tour de l'élection présidentielle 2027</div>
+            <div class="countdown">
+                <div class="time-block">
+                    <span class="number" id="days">00</span>
+                    <span class="label">Jours</span>
+                </div>
+                <div class="time-block">
+                    <span class="number" id="hours">00</span>
+                    <span class="label">Heures</span>
+                </div>
+                <div class="time-block">
+                    <span class="number" id="minutes">00</span>
+                    <span class="label">Minutes</span>
+                </div>
+                <div class="time-block">
+                    <span class="number" id="seconds">00</span>
+                    <span class="label">Secondes</span>
+                </div>
+            </div>
+        </div>
     </main>
 
     <footer>
@@ -112,7 +175,32 @@
     </footer>
 
     <script>
-        console.log("Le site de l'Action Catholique Française est chargé avec succès.");
+        // Date cible du 1er tour : 18 Avril 2027 à 08:00
+        const electionDate = new Date("April 18, 2027 08:00:00").getTime();
+
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const distance = electionDate - now;
+
+            if (distance < 0) {
+                document.querySelector(".countdown-box").innerHTML = "<h3>Le premier tour est ouvert !</h3>";
+                return;
+            }
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById("days").innerText = days < 10 ? "0" + days : days;
+            document.getElementById("hours").innerText = hours < 10 ? "0" + hours : hours;
+            document.getElementById("minutes").innerText = minutes < 10 ? "0" + minutes : minutes;
+            document.getElementById("seconds").innerText = seconds < 10 ? "0" + seconds : seconds;
+        }
+
+        // Mise à jour chaque seconde
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
     </script>
 </body>
 </html>
